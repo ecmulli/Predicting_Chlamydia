@@ -10,6 +10,8 @@ import pandas as pd
 df = pd.read_csv("C:\\Users\\evanc\\Python\\Data Analytics Project\\data.csv")
 
 def process_categorical():
+    # currently categories are represented by integers and stored as such. 
+    # We need to change them to categorical so we can get the dummies.
     global df
     
     categories = ["Gender",
@@ -62,20 +64,6 @@ def train_and_target():
     df.drop("ChlamydiaResults", axis = 1, inplace = True)
     train = df
     train = pd.get_dummies(train)
-
-
-def important_features():
-    global features
-    features = pd.DataFrame()
-    
-    from sklearn.ensemble import ExtraTreesClassifier
-    #from sklearn.feature_selection import SelectFromModel
-    clf = ExtraTreesClassifier(n_estimators=200)
-    clf = clf.fit(train, target)
-    
-    features['features'] = train.columns
-    features['importance'] = clf.feature_importances_
-    features = features.sort(['importance'], ascending = False)
     
 def run_svm():
     weights = {0:67.42, 1:892.54}
@@ -97,6 +85,5 @@ def run_decision_tree():
 if __name__ == "__main__":
     process_categorical()
     train_and_target()
-    important_features()
     run_svm()
     run_decision_tree()
